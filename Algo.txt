@@ -1,0 +1,81 @@
+S : { List of Inputs}
+T : {0} # Empty List of processed inputs
+P : {0} # Empty List of patterns
+A : {0} # Empty List of axioms
+
+
+Process()
+BEGIN
+   WHILE len(s) > 0
+   BEGIN
+   	currentWord <- S[0]
+        s.remove(currentWord);
+        foundPattern = false;    
+
+        FOR word in T
+        BEGIN
+            IF currentWord contains word
+            BEGIN
+               AddToP(currentWord)
+               AddToA(word)
+               T.Remove(word)
+            END
+            ELSE IF word contains currentWord
+	    BEGIN
+               AddToA(currentWord)
+	       AddToP(word)
+	       T.Remove(currentWord)
+ 	    END
+        END
+   END
+END
+AddToP(wordToAdd : string, A : [] , P : [], T:[])
+BEGIN
+   patternFound : bool = false
+   FOR word in P
+   BEGIN
+      IF word contains wordToAdd
+      BEGIN
+         AddToA(wordToAdd)
+         T.Remove(word)
+         P.Remove(word)
+         patternFound = true;
+      END
+      ELSE IF wordToAdd contains word
+      BEGIN
+         AddToA(word)
+         T.Remove(wordToAdd)
+         P.Remove(wordToAdd)
+         patternFound = true
+      END
+   END 
+   IF not patternFound
+   BEGIN
+       AddToP(currentWord)
+   END
+END
+
+AddToA(wordToAdd : string, A : [] , P : [], T:[])
+BEGIN
+   patternFound : bool = false
+   FOR word in A
+   BEGIN
+       IF wordToAdd contains word
+       BEGIN
+          AddToP(wordToAdd,A,P,T)
+          patternFound = true;         
+       END
+       ELSE IF word contains wordToAdd
+       BEGIN
+          AddToP(word,A,P,T)
+          A.Remove(word)
+          AddToA(wordToAdd,A,P,T)
+          patternFound = false;
+       END 
+   END  
+   IF not patternFound
+   BEGIN
+       AddToA(currentWord)
+   END
+END
+ 
