@@ -1,0 +1,154 @@
+Remove(w,L)
+Begin
+   INITIALIZE:
+   |L| = LengthOfL 
+
+   FOR i = 1 to LengthOfL
+   Begin
+     IF L[i] = w
+     Begin
+        L = L - w
+     End
+   End
+
+End
+
+SubWord (w_i,w_j,N)
+Begin
+   INITIALIZE:
+   Let |w_i |=n; |w_j |=m
+   
+   IF n>m
+      u=w_i; v=w_j
+   ELSE u=w_j;v=w_i
+   
+   INITIALIZE:
+   N=1
+   
+   FOR i=N to N+(m-1)
+   Begin
+   
+      If u(N)u(N+1)...u(N+m-1)=v(1)v(2)...v(m)
+         Return "u is a subword of v"
+      Else  N=N+1
+         If Return "u is not a subword of v"
+   End
+
+End
+
+AddToP(WordToAdd : string, A : [] , P : [], T:[])
+Begin
+   INITIALIZE:
+   false = patternFound 
+   |P| = LengthOfP
+
+   FOR i = 1 to LengthOfP
+   Begin
+      IF call SubWord(P[i],WordToAdd) = "u is a subword of v"
+      	 IF |WordToAdd| < |P[i]|
+      	 Begin
+            call AddToA(WordToAdd)
+            call Remove(P[i],T)
+            call Remove(P[i],P)
+            patternFound = true;
+         End
+         Else
+         Begin
+           call AddToA(P[i], A, P, T);
+           call Remove(WordToAdd,P)
+           call Remove(WordToAdd,T)
+           isPatternWithIn = true;
+        End
+   End 
+   IF not patternFound
+   Begin
+       call  AddToP(currentWord)
+   End
+End
+
+
+AddToA(wordToAdd : string, A : [] , P : [], T:[])
+Begin
+   INITIALIZE:
+   false = patternFound
+   |A| = lengthOfA
+
+   FOR i = 1 in lengthOfA
+   Begin
+       IF  call SubWord(wordToAdd,A[i]) = "u is a subword of v"
+          AND |wordToAdd| > |A[i]|
+       Begin
+          call AddToP(wordToAdd,A,P,T)
+          patternFound = true;         
+       End
+       ELSE
+       Begin
+          call AddToP(word,A,P,T)
+          call Remove(word,A)
+          call AddToA(wordToAdd,A,P,T)
+          patternFound = false;
+       End 
+   End
+  
+   IF not patternFound
+   Begin
+       A = A U wordToAdd
+   End
+End
+
+Process()
+INPUT: 
+
+S = { List of Characteristic Sample}
+
+INITIALIZE:
+ 
+Axiom A = {0}
+
+Pattern P = {0}
+
+Temp T = {0}
+
+|T| = LengthOfT 
+
+WHILE |S| > 0
+   BEGIN
+   	currentWord <- S[0]
+        call Remove(currentWord,S);
+        foundPattern = false;    
+
+        FOR i in 1 to LengthOfT
+        BEGIN
+            IF call SubWord(currentWord,T[i]) = currentWord contains word
+               IF |currentWord| > |T[i]|
+               BEGIN
+                  call AddToP(currentWord,A,P,T)
+                  call AddToA(T[i],A,P,T)
+                  call Remove(T[i],T)
+               END
+               ELSE 
+	       BEGIN
+                  call AddToA(currentWord,A,P,T)
+	          call AddToP(T[i],A,P,T)
+	          call Remove(currentWord,T)
+ 	       END
+        END
+   END
+   //Substitute axiom in pattern
+   Initialize aLen = |a|, pLen = |p|
+   FOR i = 1 to aLen
+      FOR j = 1 to pLen
+         p[j] = call Substitute(a[i],p[j])     
+END
+
+
+
+
+
+
+
+
+
+
+
+
