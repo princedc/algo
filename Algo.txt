@@ -28,7 +28,17 @@ BEGIN
  	    END
         END
    END
+   
+   
+   For axiom in A
+   BEGIN
+      For pattern in Process
+	  BEGIN
+	     pattern <- pattern.substitite(axiom)
+	  END
+   END
 END
+
 AddToP(wordToAdd : string, A : [] , P : [], T:[])
 BEGIN
    patternFound : bool = false
