@@ -1,0 +1,7 @@
+C:\Users\407852\Documents\Visual Studio 2017\Projects\Algo\Algo\bin\Debug\Algo.exe.config
+C:\Users\407852\Documents\Visual Studio 2017\Projects\Algo\Algo\bin\Debug\Algo.exe
+C:\Users\407852\Documents\Visual Studio 2017\Projects\Algo\Algo\bin\Debug\Algo.pdb
+C:\Users\407852\Documents\Visual Studio 2017\Projects\Algo\Algo\obj\Debug\Algo.csprojAssemblyReference.cache
+C:\Users\407852\Documents\Visual Studio 2017\Projects\Algo\Algo\obj\Debug\Algo.csproj.CoreCompileInputs.cache
+C:\Users\407852\Documents\Visual Studio 2017\Projects\Algo\Algo\obj\Debug\Algo.exe
+C:\Users\407852\Documents\Visual Studio 2017\Projects\Algo\Algo\obj\Debug\Algo.pdb
