@@ -1,0 +1,73 @@
+-----------------------------------------------------------
+S: aaaccc,aaabb,aaaaaccccc,aaaaabbb,aaacb,ac,aaaaacbcc,ab,
+A: 
+P: 
+T: 
+Start Processing: aaaccc
+-----------------------------------------------------------
+S: aaabb,aaaaaccccc,aaaaabbb,aaacb,ac,aaaaacbcc,ab,
+A: 
+P: 
+T: aaaccc,
+Start Processing: aaabb
+-----------------------------------------------------------
+S: aaaaaccccc,aaaaabbb,aaacb,ac,aaaaacbcc,ab,
+A: 
+P: 
+T: aaabb,aaaccc,
+Start Processing: aaaaaccccc
+Adding aaaccc to A.
+Adding aaaaaccccc to P.
+-----------------------------------------------------------
+S: aaaaabbb,aaacb,ac,aaaaacbcc,ab,
+A: aaaccc,
+P: aaaaaccccc,
+T: aaaaaccccc,aaabb,
+Start Processing: aaaaabbb
+Adding aaabb to A.
+Adding aaaaabbb to P.
+-----------------------------------------------------------
+S: aaacb,ac,aaaaacbcc,ab,
+A: aaaccc,aaabb,
+P: aaaaaccccc,aaaaabbb,
+T: aaaaabbb,aaaaaccccc,
+Start Processing: aaacb
+-----------------------------------------------------------
+S: ac,aaaaacbcc,ab,
+A: aaaccc,aaabb,
+P: aaaaaccccc,aaaaabbb,
+T: aaacb,aaaaabbb,aaaaaccccc,
+Start Processing: ac
+Removing aaaaaccccc from P.
+Removing aaaaaccccc from T.
+Remove aaaccc from A.
+Adding aaacb to P.
+-----------------------------------------------------------
+S: aaaaacbcc,ab,
+A: ac,aaabb,
+P: aaaaabbb,aaacb,
+T: aaacb,aaaaabbb,
+Start Processing: aaaaacbcc
+-----------------------------------------------------------
+S: ab,
+A: ac,aaabb,
+P: aaaaabbb,aaacb,
+T: aaaaacbcc,aaaaabbb,
+Start Processing: ab
+Removing aaaaabbb from P.
+Removing aaaaabbb from T.
+Remove aaabb from A.
+Adding aaaaabbb to P.
+-----------------------------------------------------------
+S: 
+A: ab,ac,
+P: aaacb,aaaaabbb,
+T: 
+-----------------------------------------------------------
+--------------------------Final Result---------------------------------
+-----------------------------------------------------------
+S: 
+A: ab,ac,
+P: aa~b,aaaa~bb,
+T: 
+-----------------------------------------------------------
