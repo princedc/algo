@@ -7,84 +7,56 @@ namespace Algo
     {
         static void Main(string[] args)
         {
-            List<String> S = new List<String> { "aaaccc", "aaabb", "aaaaaccccc", "aaaaabbb", "aaaacb", "ac", "aaaaacbcc", "ab" };
+            List<String> S = new List<String> { "aaaccc", "aaabb", "aaaaaccccc", "aaaaabbb", "aaacb", "ac", "aaaaacbcc", "ab" };
             List<String> T = new List<String>();
             List<String> P = new List<String>();
             List<String> A = new List<String>();
-            string pattern, axiom;
+            string pattern = null, axiom = null;
 
-            //T.ForEach(item => Console.WriteLine(item));
             string itemToAdd = string.Empty;
             string currentWord = String.Empty;
             bool foundPattern = false;
+
             while (S.Count > 0)
             {
+                DebugPrint(S, A, P, T);
                 foundPattern = false;
                 currentWord = S[0];
-                //if(T.Count == 0)
-                //    T.Insert(0, itemToAdd);
                 S.Remove(currentWord);
 
-                for (int ti = 0; ti < T.Count; ti++)
+                Console.WriteLine("Start Processing: " + currentWord);
+
+                T.Insert(0, currentWord);
+                axiom = pattern = null;
+                for (int ti = 1; ti < T.Count; ti++)
                 {
-                    if (currentWord.Contains(T[ti]))
+                    if (T[0].Contains(T[ti]))
                     {
-                        pattern = currentWord;
+                        pattern = T[0];
                         axiom = T[ti];
-                        ProcessAddToP(pattern, A, P, T);
                         ProcessAddToA(axiom, A, P, T);
-                        T.Remove(T.Find(i => i.Equals(axiom)));
+                        ProcessAddToP(pattern, A, P, T, false);
+                      
                         foundPattern = true;
                     }
-                    else if (T[ti].Contains(currentWord))
+                    else if (T[ti].Contains(T[0]))
                     {
-                        axiom = currentWord;
+                        axiom = T[0];
                         pattern = T[ti];
-                        ProcessAddToP(pattern, A, P, T);
                         ProcessAddToA(axiom, A, P, T);
-                        T.Remove(T.Find(i => i.Equals(axiom)));
+                        ProcessAddToP(pattern, A, P, T, false);
                         foundPattern = true;
                     }
                 }
-                if (!foundPattern)
+                if(axiom != null)
                 {
-                    T.Add(currentWord);
+                    T.Remove(T.Find(item => item.Equals(axiom)));
                 }
-
-
-                //    for (int ti = 0; ti < T.Count - 1; ti++)
-                //{
-                //    if (T[ti].Contains(T[ti + 1]))
-                //    {
-                //        pattern = T[ti];
-                //        axiom = T[ti + 1];
-                //        ProcessAddToP(pattern, A, P, T);
-                //        ProcessAddToA(axiom, A, P, T);
-                //        T.Remove(T.Find(i => i.Equals(axiom)));
-                //    }
-                //    else if (T[ti + 1].Contains(T[ti]))
-                //    {
-                //        pattern = T[ti + 1];
-                //        axiom = T[ti];
-                //        ProcessAddToP(pattern, A, P, T);
-                //        ProcessAddToA(axiom, A, P, T);
-                //        T.Remove(T.Find(i => i.Equals(axiom)));
-                //        //P.Add(T[tj]);
-                //        //A.Add(T[ti]);
-                //    }
-                //}
-
-                T.ForEach(item => Console.WriteLine("T :" + item));
-                P.ForEach(item => Console.WriteLine("P :" + item));
-                A.ForEach(item => Console.WriteLine("A :" + item));
-                S.ForEach(item => Console.WriteLine("S :" + item));
-                Console.WriteLine("-----------------------------------------------------------");
-
             }
 
             if (T.Count == 1)
             {
-                ProcessAddToP(T[0], A, P, T);
+                ProcessAddToP(T[0], A, P, T, false);
                 T.RemoveAt(0);
             }
             else
@@ -96,7 +68,7 @@ namespace Algo
                         {
                             pattern = T[i];
                             axiom = T[i + 1];
-                            ProcessAddToP(pattern, A, P, T);
+                            ProcessAddToP(pattern, A, P, T, false);
                             ProcessAddToA(axiom, A, P, T);
 
                         }
@@ -104,97 +76,132 @@ namespace Algo
                         {
                             pattern = T[i + 1];
                             axiom = T[i];
-                            ProcessAddToP(pattern, A, P, T);
+                            ProcessAddToP(pattern, A, P, T, false);
                             ProcessAddToA(axiom, A, P, T);
                         }
                     }
                 }
 
-            T.ForEach(item => Console.WriteLine("T :" + item));
-            P.ForEach(item => Console.WriteLine("P :" + item));
-            A.ForEach(item => Console.WriteLine("A :" + item));
-            S.ForEach(item => Console.WriteLine("S :" + item));
+            DebugPrint(S, A, P, T);
             Console.WriteLine("-----------------------------------------------------------");
 
-            foreach ( var w in A)
+            foreach (var w in A)
             {
                 for (int i = 0; i < P.Count; i++)
                     P[i] = P[i].Replace(w, "~");
             }
-            
+
 
 
             Console.WriteLine("--------------------------Final Result---------------------------------");
-
-            T.ForEach(item => Console.WriteLine("T :" + item));
-            P.ForEach(item => Console.WriteLine("P :" + item));
-            A.ForEach(item => Console.WriteLine("A :" + item));
-            S.ForEach(item => Console.WriteLine("S :" + item));
+            DebugPrint(S, A, P, T);
             Console.WriteLine("-----------------------------------------------------------");
             Console.Read();
         }
+
         public static void ProcessAddToA(string currentWord, List<String> A, List<String> P, List<String> T)
         {
             bool isPatternWithIn = false;
             string pattern, axiom;
+            int w1Len = 0, w2Len = 0;
+             w1Len = currentWord.Length;
             for (int i = 0; i < A.Count; i++)
             {
-                if (currentWord.Contains(A[i]) && currentWord.Length != A[i].Length)
+                w2Len = A[i].Length;
+                if( w1Len > w2Len && currentWord.Contains(A[i]))
                 {
-                    //A.Add(A[i]);
-                    ProcessAddToP(currentWord, A, P, T);
+                    ProcessAddToP(currentWord, A, P, T, true);
                     isPatternWithIn = true;
-
                 }
-                else if (A[i].Contains(currentWord) && currentWord.Length != A[i].Length)
+                else if (w1Len < w2Len && A[i].Contains(currentWord))
                 {
                     pattern = A[i];
                     axiom = currentWord;
-                    ProcessAddToP(pattern, A, P, T);
+
+
+                    ProcessAddToP(pattern, A, P, T, true);
+
+                    Console.WriteLine("Remove " + pattern + " from A.");
                     A.Remove(A.Find(item => item.Equals(pattern)));
-                    ProcessAddToA(currentWord, A, P, T);
+                    A.Insert(0, currentWord);
                     isPatternWithIn = true;
                 }
             }
             if (!isPatternWithIn && !A.Exists(item => item.Equals(currentWord)))
             {
+                Console.WriteLine("Adding " + currentWord + " to A.");
                 A.Add(currentWord);
             }
         }
-        public static void ProcessAddToP(string currentWord, List<String> A, List<String> P, List<String> T)
+        public static void ProcessAddToP(string currentWord, List<String> A, List<String> P, List<String> T, bool processT)
         {
             bool isPatternWithIn = false;
             string axiom;
+
             for (int i = 0; i < P.Count; i++)
             {
                 if (currentWord.Length != P[i].Length && currentWord.Contains(P[i]))
                 {
-                    //A.Add(P[i]);
                     axiom = P[i];
                     ProcessAddToA(axiom, A, P, T);
 
-                    P.Remove(P.Find(item => item.Equals(currentWord)));
-                    T.Remove(T.Find(item => item.Equals(currentWord)));
+
+                    if (processT)
+                    {
+                        Console.WriteLine("Removing " + currentWord + " from P.");
+                        P.Remove(P.Find(item => item.Equals(currentWord)));
+                        Console.WriteLine("Removing " + currentWord + " from T.");
+                        T.Remove(T.Find(item => item.Equals(currentWord)));
+                    }
                     isPatternWithIn = true;
-                    //sourceToAdd.Remove(sourceToAdd[i]);
-                    //P.Add(currentWork);
                 }
                 else if (P[i].Contains(currentWord) && currentWord.Length != P[i].Length)
                 {
-                    //A.Add(currentWord);
-                    //P.Add(sourceToAdd[i]);
                     string temp = P[i];
+                    if(!processT)
                     ProcessAddToA(currentWord, A, P, T);
-                    P.Remove(P.Find(item => item.Equals(temp)));
-                    T.Remove(T.Find(item => item.Equals(temp)));
+
+                    if (processT)
+                    {
+                        Console.WriteLine("Removing " + temp + " from P.");
+                        P.Remove(P.Find(item => item.Equals(temp)));
+                        Console.WriteLine("Removing " + temp + " from T.");
+                        T.Remove(T.Find(item => item.Equals(temp)));
+                    }
                     isPatternWithIn = true;
                 }
 
             }
             if (!isPatternWithIn && !P.Exists(item => item.Equals(currentWord)))
             {
+                Console.WriteLine("Adding " + currentWord + " to P.");
                 P.Add(currentWord);
             }
         }
+
+
+        public static void DebugPrint(List<string> S, List<string> A, List<String> P, List<String> T)
+        {
+            Console.WriteLine("-----------------------------------------------------------");
+            Console.Write("S: ");
+            S.ForEach(item => Console.Write(item + ","));
+            Console.WriteLine("");
+            Console.Write("A: ");
+            A.ForEach(item => Console.Write(item + ","));
+            Console.WriteLine("");
+            Console.Write("P: ");
+            P.ForEach(item => Console.Write(item + ","));
+            Console.WriteLine("");
+            Console.Write("T: ");
+            T.ForEach(item => Console.Write(item + ","));
+            Console.WriteLine("");
+
+        }
     }
+
+
 }
+
+
+
+
